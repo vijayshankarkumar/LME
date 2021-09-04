@@ -11,6 +11,53 @@ NOTE: This project is highly under production.
 * For **Data Structure and Algorith** visualizer.
 * It can used as svg rendering engine.
 
+# Example
+```cpp
+class TestScene : public laal::Scene
+{
+public:
+
+	void Construct() override
+	{
+		laal::Line ln(Point(-1, 0, 0), Point(1, 0, 0));
+		ln.StrokeColor(laal::ORANGE_RED);
+		Add(&ln);
+
+		auto func1 = [](double t)
+		{
+			return t;
+		};
+		auto func2 = [](double t)
+		{
+			return (1.0 / gmtl::Math::TWO_PI) * gmtl::Math::sin(t * gmtl::Math::TWO_PI);
+		};
+
+		laal::ParametricCurve pc(func1, func2, -1, 1);
+		pc.StrokeColor(laal::BLUE_VIOLET);
+		Add(&pc);
+
+		laal::Arrow ar(Point(0, 0, 0), Point(0.5, 0.0, 0.0));
+		Add(&ar);
+
+		laal::ShapeGroup sg;
+		laal::Dot dt;
+		dt.Translate(0.5, 0.0,  0.0);
+		sg.Add(&dt);
+		laal::Line ln1(Point(0.0, 0.0, 0.0), Point(0.5, 0.0, 0.0));
+		ln1.StrokeColor(laal::WHITE);
+		sg.Add(&ln1);
+		Add(&sg);
+
+		laal::FollowPath fp(&sg, func1, func2, -1, 1, 3.0, 0);
+		fp.EaseFunction(laal::EaseInOutExpo);
+		Add(&fp);
+		fp.Begin();
+		Play();
+		Wait(0.5);
+	}
+};
+```
+
 # System Requirement
 * C++ 17
 * Visual Studio 2019 or higher with UTF-8 encoding enabled
@@ -28,5 +75,5 @@ Clone the project in Visual Studio 2019 or higher with C++ 17 enabled and handle
 # Contributing
 Contribution to this project is always welcomed.
 
-#License
+# License
 This project falls under MIT License.
